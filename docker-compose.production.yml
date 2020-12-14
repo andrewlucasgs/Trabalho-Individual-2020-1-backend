@@ -7,6 +7,8 @@ services:
       - 3000:3000
     depends_on:
       - postgres
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
     command: bash -c "rm -f tmp/pids/server.pid && rails db:create && rails db:migrate &&  bundle exec rails s -p 3000 -b '0.0.0.0'"
 
   postgres:
@@ -22,14 +24,18 @@ services:
   frontend:
     image: andrewlucasgs/trabalho-individual-2020-1-frontend:latest
     ports:
-    - '80:80'
+      - '80:80'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
 
   watchtower:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /root/.docker/config.json:/config.json
-    command: --interval 60
+      - ~/.docker/config.json:/config.json
+    command: --cleanup true --debug true --interval 30
+
 
 volumes:
     pg_data: {}
