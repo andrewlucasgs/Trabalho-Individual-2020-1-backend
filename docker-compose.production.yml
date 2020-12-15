@@ -37,7 +37,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/.docker/config.json:/config.json
-    command: --cleanup true --debug true --interval 30 frontend api
+    command: --cleanup true --debug true --interval 300 frontend api
 
 
 volumes:
