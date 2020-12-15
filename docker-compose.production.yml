@@ -1,8 +1,9 @@
-version: "3.8"
+version: "3"
 
 services:
   api:
-    image: andrewlucasgs/trabalho-individual-2020-1-api:latest
+    container_name: api
+    image: registry.hub.docker.com/andrewlucasgs/trabalho-individual-2020-1-api:latest
     ports:
       - 3000:3000
     depends_on:
@@ -14,6 +15,7 @@ services:
   postgres:
     image: postgres:11.4
     container_name: postgres
+    restart: always
     environment: 
         POSTGRES_USER: ${POSTGRES_USER:-postgres}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
@@ -22,7 +24,8 @@ services:
         - pg_data:/var/lib/postgresql/data
 
   frontend:
-    image: andrewlucasgs/trabalho-individual-2020-1-frontend:latest
+    container_name: frontend
+    image: registry.hub.docker.com/andrewlucasgs/trabalho-individual-2020-1-frontend:latest
     ports:
       - '80:80'
     labels:
@@ -33,8 +36,8 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.docker/config.json:/config.json
-    command: --cleanup true --debug true --interval 30
+      - /root/.docker/config.json:/config.json
+    command: --cleanup true --debug true --interval 30 frontend api
 
 
 volumes:
